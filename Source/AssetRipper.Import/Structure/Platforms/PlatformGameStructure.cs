@@ -303,8 +303,10 @@ namespace AssetRipper.Import.Structure.Platforms
 		/// </summary>
 		protected void AddFile(IDictionary<string, string> files, string name, string path)
 		{
-			files.Add(name, path);
-			Logger.Info(LogCategory.Import, $"Game file '{name}' has been found");
+			if (files.TryAdd(name, path))
+			{
+				Logger.Info(LogCategory.Import, $"Game file '{name}' has been found");
+			}
 		}
 
 		protected void AddAssetBundle(IDictionary<string, string> files, string name, string path)

@@ -196,212 +196,239 @@ namespace AssetRipper.Export.UnityProjects.Textures
 
 		private static bool TryDecodeTexture(TextureFormat textureFormat, int width, int height, ReadOnlySpan<byte> inputSpan, Span<byte> outputSpan)
 		{
-			switch (textureFormat)
+			try
 			{
-				//ASTC
-				case TextureFormat.ASTC_RGB_4x4:
-				case TextureFormat.ASTC_RGBA_4x4:
-					AstcDecoder.DecodeASTC(inputSpan, width, height, 4, 4, outputSpan);
-					return true;
+				switch (textureFormat)
+				{
+					//ASTC
+					case TextureFormat.ASTC_RGB_4x4:
+					case TextureFormat.ASTC_RGBA_4x4:
+						AstcDecoder.DecodeASTC(inputSpan, width, height, 4, 4, outputSpan);
+						return true;
 
-				case TextureFormat.ASTC_RGB_5x5:
-				case TextureFormat.ASTC_RGBA_5x5:
-					AstcDecoder.DecodeASTC(inputSpan, width, height, 5, 5, outputSpan);
-					return true;
+					case TextureFormat.ASTC_RGB_5x5:
+					case TextureFormat.ASTC_RGBA_5x5:
+						AstcDecoder.DecodeASTC(inputSpan, width, height, 5, 5, outputSpan);
+						return true;
 
-				case TextureFormat.ASTC_RGB_6x6:
-				case TextureFormat.ASTC_RGBA_6x6:
-					AstcDecoder.DecodeASTC(inputSpan, width, height, 6, 6, outputSpan);
-					return true;
+					case TextureFormat.ASTC_RGB_6x6:
+					case TextureFormat.ASTC_RGBA_6x6:
+						AstcDecoder.DecodeASTC(inputSpan, width, height, 6, 6, outputSpan);
+						return true;
 
-				case TextureFormat.ASTC_RGB_8x8:
-				case TextureFormat.ASTC_RGBA_8x8:
-					AstcDecoder.DecodeASTC(inputSpan, width, height, 8, 8, outputSpan);
-					return true;
+					case TextureFormat.ASTC_RGB_8x8:
+					case TextureFormat.ASTC_RGBA_8x8:
+						AstcDecoder.DecodeASTC(inputSpan, width, height, 8, 8, outputSpan);
+						return true;
 
-				case TextureFormat.ASTC_RGB_10x10:
-				case TextureFormat.ASTC_RGBA_10x10:
-					AstcDecoder.DecodeASTC(inputSpan, width, height, 10, 10, outputSpan);
-					return true;
+					case TextureFormat.ASTC_RGB_10x10:
+					case TextureFormat.ASTC_RGBA_10x10:
+						AstcDecoder.DecodeASTC(inputSpan, width, height, 10, 10, outputSpan);
+						return true;
 
-				case TextureFormat.ASTC_RGB_12x12:
-				case TextureFormat.ASTC_RGBA_12x12:
-					AstcDecoder.DecodeASTC(inputSpan, width, height, 12, 12, outputSpan);
-					return true;
+					case TextureFormat.ASTC_RGB_12x12:
+					case TextureFormat.ASTC_RGBA_12x12:
+						AstcDecoder.DecodeASTC(inputSpan, width, height, 12, 12, outputSpan);
+						return true;
 
-				//ATC
-				case TextureFormat.ATC_RGB4:
-					AtcDecoder.DecompressAtcRgb4(inputSpan, width, height, outputSpan);
-					return true;
+					//ATC
+					case TextureFormat.ATC_RGB4:
+						AtcDecoder.DecompressAtcRgb4(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.ATC_RGBA8:
-					AtcDecoder.DecompressAtcRgba8(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.ATC_RGBA8:
+						AtcDecoder.DecompressAtcRgba8(inputSpan, width, height, outputSpan);
+						return true;
 
-				//BC
-				case TextureFormat.BC4:
-				case TextureFormat.BC5:
-				case TextureFormat.BC6H:
-				case TextureFormat.BC7:
-					return DecodeBC(inputSpan, textureFormat, width, height, outputSpan);
+					//BC
+					case TextureFormat.BC4:
+					case TextureFormat.BC5:
+					case TextureFormat.BC6H:
+					case TextureFormat.BC7:
+						return DecodeBC(inputSpan, textureFormat, width, height, outputSpan);
 
-				//DXT
-				case TextureFormat.DXT1:
-				case TextureFormat.DXT1Crunched:
-					DxtDecoder.DecompressDXT1(inputSpan, width, height, outputSpan);
-					return true;
+					//DXT
+					case TextureFormat.DXT1:
+					case TextureFormat.DXT1Crunched:
+						DxtDecoder.DecompressDXT1(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.DXT3:
-					DxtDecoder.DecompressDXT3(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.DXT3:
+						DxtDecoder.DecompressDXT3(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.DXT5:
-				case TextureFormat.DXT5Crunched:
-					DxtDecoder.DecompressDXT5(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.DXT5:
+					case TextureFormat.DXT5Crunched:
+						DxtDecoder.DecompressDXT5(inputSpan, width, height, outputSpan);
+						return true;
 
-				//ETC
-				case TextureFormat.ETC_RGB4:
-				case TextureFormat.ETC_RGB4_3DS:
-				case TextureFormat.ETC_RGB4Crunched:
-					EtcDecoder.DecompressETC(inputSpan, width, height, outputSpan);
-					return true;
+					//ETC
+					case TextureFormat.ETC_RGB4:
+					case TextureFormat.ETC_RGB4_3DS:
+					case TextureFormat.ETC_RGB4Crunched:
+						EtcDecoder.DecompressETC(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.EAC_R:
-					EtcDecoder.DecompressEACRUnsigned(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.EAC_R:
+						EtcDecoder.DecompressEACRUnsigned(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.EAC_R_SIGNED:
-					EtcDecoder.DecompressEACRSigned(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.EAC_R_SIGNED:
+						EtcDecoder.DecompressEACRSigned(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.EAC_RG:
-					EtcDecoder.DecompressEACRGUnsigned(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.EAC_RG:
+						EtcDecoder.DecompressEACRGUnsigned(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.EAC_RG_SIGNED:
-					EtcDecoder.DecompressEACRGSigned(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.EAC_RG_SIGNED:
+						EtcDecoder.DecompressEACRGSigned(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.ETC2_RGB:
-					EtcDecoder.DecompressETC2(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.ETC2_RGB:
+						EtcDecoder.DecompressETC2(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.ETC2_RGBA1:
-					EtcDecoder.DecompressETC2A1(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.ETC2_RGBA1:
+						EtcDecoder.DecompressETC2A1(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.ETC2_RGBA8:
-				case TextureFormat.ETC_RGBA8_3DS:
-				case TextureFormat.ETC2_RGBA8Crunched:
-					EtcDecoder.DecompressETC2A8(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.ETC2_RGBA8:
+					case TextureFormat.ETC_RGBA8_3DS:
+					case TextureFormat.ETC2_RGBA8Crunched:
+						EtcDecoder.DecompressETC2A8(inputSpan, width, height, outputSpan);
+						return true;
 
-				//PVRTC
-				case TextureFormat.PVRTC_RGB2:
-				case TextureFormat.PVRTC_RGBA2:
-					PvrtcDecoder.DecompressPVRTC(inputSpan, width, height, true, outputSpan);
-					return true;
+					//PVRTC
+					case TextureFormat.PVRTC_RGB2:
+					case TextureFormat.PVRTC_RGBA2:
+						PvrtcDecoder.DecompressPVRTC(inputSpan, width, height, true, outputSpan);
+						return true;
 
-				case TextureFormat.PVRTC_RGB4:
-				case TextureFormat.PVRTC_RGBA4:
-					PvrtcDecoder.DecompressPVRTC(inputSpan, width, height, false, outputSpan);
-					return true;
+					case TextureFormat.PVRTC_RGB4:
+					case TextureFormat.PVRTC_RGBA4:
+						PvrtcDecoder.DecompressPVRTC(inputSpan, width, height, false, outputSpan);
+						return true;
 
-				//YUY2
-				case TextureFormat.YUY2:
-					Yuy2Decoder.DecompressYUY2(inputSpan, width, height, outputSpan);
-					return true;
+					//YUY2
+					case TextureFormat.YUY2:
+						Yuy2Decoder.DecompressYUY2(inputSpan, width, height, outputSpan);
+						return true;
 
-				//RGB
-				case TextureFormat.Alpha8:
-					RgbConverter.Convert<ColorA<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					//RGB
+					case TextureFormat.Alpha8:
+						RgbConverter.Convert<ColorA<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.ARGB4444:
-					RgbConverter.Convert<ColorARGB16, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.ARGB4444:
+						RgbConverter.Convert<ColorARGB16, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGBA4444:
-					RgbConverter.Convert<ColorRGBA16, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGBA4444:
+						RgbConverter.Convert<ColorRGBA16, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGB565:
-					RgbConverter.Convert<ColorRGB16, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGB565:
+						RgbConverter.Convert<ColorRGB16, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
+						return true;
 
-				case TextureFormat.R8:
-					RgbConverter.Convert<ColorR<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.R8:
+						RgbConverter.Convert<ColorR<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RG16:
-					RgbConverter.Convert<ColorRG<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RG16:
+						RgbConverter.Convert<ColorRG<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGB24:
-					RgbConverter.Convert<ColorRGB<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGB24:
+						RgbConverter.Convert<ColorRGB<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGBA32:
-					RgbConverter.Convert<ColorRGBA<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGBA32:
+						RgbConverter.Convert<ColorRGBA<byte>, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.ARGB32:
-					RgbConverter.Convert<ColorARGB32, byte, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.ARGB32:
+						RgbConverter.Convert<ColorARGB32, byte, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.BGRA32_14:
-				case TextureFormat.BGRA32_37:
-					inputSpan.CopyTo(outputSpan);
-					return true;
+					case TextureFormat.BGRA32_14:
+					case TextureFormat.BGRA32_37:
+						inputSpan.CopyTo(outputSpan);
+						return true;
 
-				case TextureFormat.R16:
-					RgbConverter.Convert<ColorR<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.R16:
+						RgbConverter.Convert<ColorR<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RG32:
-					RgbConverter.Convert<ColorRG<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RG32:
+						RgbConverter.Convert<ColorRG<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGB48:
-					RgbConverter.Convert<ColorRGB<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGB48:
+						RgbConverter.Convert<ColorRGB<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGBA64:
-					RgbConverter.Convert<ColorRGBA<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGBA64:
+						RgbConverter.Convert<ColorRGBA<ushort>, ushort, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RHalf:
-					RgbConverter.Convert<ColorR<Half>, Half, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RHalf:
+						RgbConverter.Convert<ColorR<Half>, Half, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGHalf:
-					RgbConverter.Convert<ColorRG<Half>, Half, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGHalf:
+						RgbConverter.Convert<ColorRG<Half>, Half, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGBAHalf:
-					RgbConverter.Convert<ColorRGBA<Half>, Half, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGBAHalf:
+						RgbConverter.Convert<ColorRGBA<Half>, Half, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RFloat:
-					RgbConverter.Convert<ColorR<float>, float, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RFloat:
+						RgbConverter.Convert<ColorR<float>, float, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGFloat:
-					RgbConverter.Convert<ColorRG<float>, float, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGFloat:
+						RgbConverter.Convert<ColorRG<float>, float, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGBAFloat:
-					RgbConverter.Convert<ColorRGBA<float>, float, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGBAFloat:
+						RgbConverter.Convert<ColorRGBA<float>, float, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				case TextureFormat.RGB9e5Float:
-					RgbConverter.Convert<ColorRGB9e5, double, ColorBGRA32, byte>(inputSpan, width, height, outputSpan);
-					return true;
+					case TextureFormat.RGB9e5Float:
+						RgbConverter.Convert<ColorRGB9e5, double, ColorBGRA32, byte>(inputSpan, width, height,
+							outputSpan);
+						return true;
 
-				default:
-					Logger.Log(LogType.Error, LogCategory.Export, $"Unsupported texture format '{textureFormat}'");
-					return false;
+					default:
+						Logger.Log(LogType.Error, LogCategory.Export, $"Unsupported texture format '{textureFormat}'");
+						return false;
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return false;
 			}
 		}
 

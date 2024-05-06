@@ -109,13 +109,13 @@ namespace AssetRipper.Processing.Editor
 					spriteAtlas.ConvertToEditorFormat();
 					break;
 				case IAnimationClip animationClip:
-					AnimationClipConverter.Process(animationClip, checksumCache!.Value);
+					//AnimationClipConverter.Process(animationClip, checksumCache!.Value);
 					break;
 				case IAssetBundle assetBundle:
 					OriginalPathHelper.SetOriginalPaths(assetBundle, bundledAssetsExportMode);
 					break;
 				case INavMeshSettings navMeshSettings:
-					navMeshSettings.ConvertToEditorFormat();
+					//navMeshSettings.ConvertToEditorFormat();
 					break;
 				case IResourceManager resourceManager:
 					OriginalPathHelper.SetOriginalPaths(resourceManager);

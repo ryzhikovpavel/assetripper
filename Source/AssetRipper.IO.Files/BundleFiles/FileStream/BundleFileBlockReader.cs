@@ -86,8 +86,13 @@ namespace AssetRipper.IO.Files.BundleFiles.FileStream
 								byte[] uncompressedBytes = new byte[uncompressedSize];
 								byte[] compressedBytes = new BinaryReader(m_stream).ReadBytes((int)block.CompressedSize);
 								int bytesWritten = LZ4Codec.Decode(compressedBytes, uncompressedBytes);
+								
 								if (bytesWritten < 0)
 								{
+									m_stream.Position = 64;
+									compressedBytes = new BinaryReader(m_stream).ReadBytes((int)block.CompressedSize);
+									uncompressedBytes = LZ4.LZ4Codec.UnpackLZ4(compressedBytes);
+									
 									EncryptedFileException.Throw(entry.PathFixed);
 								}
 								else if (bytesWritten != uncompressedSize)
